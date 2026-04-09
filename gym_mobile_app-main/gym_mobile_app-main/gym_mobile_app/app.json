@@ -1,0 +1,43 @@
+{
+  "expo": {
+    "name": "HiWox",
+    "slug": "gym_mobile_app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon1.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/images/icon1.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/icon1.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.khavya.gym_mobile_app"
+    },
+    "web": {
+      "favicon": "./assets/images/icon1.png",
+      "bundler": "metro"
+    },
+    "experiments": {
+      "baseUrl": "/gym_mobile_app"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "4867a78e-b67d-4390-913b-4d65a9b54ccf"
+      }
+    },
+    "plugins": [
+      "expo-secure-store"
+    ]
+  }
+}
