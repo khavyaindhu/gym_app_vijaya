@@ -129,7 +129,7 @@ export default function ForgotPassword() {
     try {
       // Call new API endpoint to check if email is registered
       const response = await fetch(
-        "https://gym-backend-20dr.onrender.com/api/auth/check-email",
+        "https://hiwox.dedyn.io/api/auth/check-email",
         {
           method: "POST",
           headers: {
@@ -146,7 +146,7 @@ export default function ForgotPassword() {
     if (response.ok && data.exists === true) {
       // Step 2: Trigger reset email
       const sendEmailResponse = await fetch(
-        "https://gym-backend-20dr.onrender.com/api/auth/send-reset-email",
+        "https://hiwox.dedyn.io/api/auth/send-reset-email",
         {
           method: "POST",
           headers: {
@@ -202,7 +202,7 @@ export default function ForgotPassword() {
 
   try {
     const response = await fetch(
-      "https://gym-backend-20dr.onrender.com/api/auth/verify-otp",
+      "https://hiwox.dedyn.io/api/auth/verify-otp",
       {
         method: "POST",
         headers: {
@@ -239,7 +239,7 @@ export default function ForgotPassword() {
 
   try {
     const response = await fetch(
-      "https://gym-backend-20dr.onrender.com/api/auth/send-reset-email",
+      "https://hiwox.dedyn.io/api/auth/send-reset-email",
       {
         method: "POST",
         headers: {
@@ -306,7 +306,7 @@ export default function ForgotPassword() {
 
   try {
     const response = await fetch(
-      "https://gym-backend-20dr.onrender.com/api/auth/reset-password",
+      "https://hiwox.dedyn.io/api/auth/reset-password",
       {
         method: "POST",
         headers: {

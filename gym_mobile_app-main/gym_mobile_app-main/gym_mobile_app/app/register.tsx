@@ -252,7 +252,7 @@ export default function Register() {
 
     try {
       const response = await fetch(
-        "https://gym-backend-20dr.onrender.com/api/auth/register",
+        "https://hiwox.dedyn.io/api/auth/register",
         {
           method: "POST",
           headers: {

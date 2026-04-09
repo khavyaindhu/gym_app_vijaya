@@ -120,7 +120,7 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [identifier, setIdentifier] = useState("");
 
-  const API_BASE_URL = "https://gym-backend-20dr.onrender.com/api";
+  const API_BASE_URL = "https://hiwox.dedyn.io/api";
 
   // Toast Component
   const Toast: React.FC<ToastProps> = ({ visible, message, onHide, type = 'success' }) => {

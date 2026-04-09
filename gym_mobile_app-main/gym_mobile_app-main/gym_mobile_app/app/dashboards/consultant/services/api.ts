@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const API_BASE_URL = 'https://gym-backend-20dr.onrender.com/api';
+const API_BASE_URL = 'https://hiwox.dedyn.io/api';
 
 interface ApiResponse<T> {
   data: T;
