@@ -1,0 +1,28 @@
+{
+  "expo": {
+    "name": "PPG Heart Scanner",
+    "slug": "ppg-heart-scanner",
+    "version": "1.0.0",
+    "scheme": "ppgscanner",
+    "platforms": [
+      "android"
+    ],
+    "android": {
+      "package": "com.ppgheartscanner",
+      "permissions": [
+        "CAMERA"
+      ]
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "37d3db08-e7cf-44d6-97e3-8775b5ee9350"
+      }
+    }
+  }
+}
