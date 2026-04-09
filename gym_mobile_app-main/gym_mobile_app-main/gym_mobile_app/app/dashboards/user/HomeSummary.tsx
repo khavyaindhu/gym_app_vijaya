@@ -9,7 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import type { NavigationProp } from '@react-navigation/native';
 import { getRandomQuote, type Quote } from './motivationalQuotes';
-import { Video, Play, Star, Eye, Activity, Flame, Droplet, Target, Utensils, TrendingUp } from 'lucide-react-native';
+import { Video, Play, Star, Eye, Activity, Flame, Droplet, Target, Utensils, TrendingUp, Heart } from 'lucide-react-native';
 import { getRandomVideo, getYouTubeThumbnail, getYouTubeUrl, type VideoRecommendation } from './videoRecommendations';
 import { Linking, Image } from 'react-native';
 import { BookOpen, Clock, User as UserIcon } from 'lucide-react-native';
@@ -598,6 +598,33 @@ useEffect(() => {
 
 
 
+{/* Heart Rate Scanner Card */}
+<TouchableOpacity
+  style={styles.heartRateCard}
+  onPress={() => router.push('/dashboards/user/HeartRateScan')}
+  activeOpacity={0.85}
+>
+  <LinearGradient
+    colors={['#1a0a0f', '#2d0f1a']}
+    style={styles.heartRateGradient}
+    start={{ x: 0, y: 0 }}
+    end={{ x: 1, y: 1 }}
+  >
+    <View style={styles.heartRateLeft}>
+      <View style={styles.heartRateIconCircle}>
+        <Heart size={28} color="#FF4081" fill="#FF408133" strokeWidth={2} />
+      </View>
+      <View style={styles.heartRateTextGroup}>
+        <Text style={styles.heartRateTitle}>Heart Rate Scan</Text>
+        <Text style={styles.heartRateSubtitle}>Measure your BPM using camera</Text>
+      </View>
+    </View>
+    <View style={styles.heartRateBadge}>
+      <Text style={styles.heartRateBadgeText}>Scan Now →</Text>
+    </View>
+  </LinearGradient>
+</TouchableOpacity>
+
 {/* Quick Actions */}
 <View style={styles.quickActionsContainer}>
   <View style={styles.quickActionsHeader}>
@@ -638,7 +665,7 @@ useEffect(() => {
       <Text style={styles.actionText}>Start Workout</Text>
     </TouchableOpacity>
 
-    <TouchableOpacity 
+    <TouchableOpacity
       style={styles.actionButton}
      onPress={() => router.push('/dashboards/user/WeeklyCheckinScreen')}
     >
@@ -646,6 +673,16 @@ useEffect(() => {
         <ClipboardList size={24} color="#A78BFA" strokeWidth={2} />
       </View>
       <Text style={styles.actionText}>Weekly Check-In</Text>
+    </TouchableOpacity>
+
+    <TouchableOpacity
+      style={styles.actionButton}
+      onPress={() => router.push('/dashboards/user/HeartRateScan')}
+    >
+      <View style={[styles.actionIconContainer, { backgroundColor: 'rgba(255, 64, 129, 0.15)' }]}>
+        <Heart size={24} color="#FF4081" strokeWidth={2} />
+      </View>
+      <Text style={styles.actionText}>Heart Rate</Text>
     </TouchableOpacity>
 
   </View>
@@ -1609,6 +1646,63 @@ quoteAuthor: {
   achievementDesc: {
     fontSize: 12,
     color: '#94A3B8',
+  },
+
+  // ── Heart Rate Card ────────────────────────────────────────────
+  heartRateCard: {
+    marginHorizontal: 16,
+    marginBottom: 16,
+    borderRadius: 16,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#FF408133',
+  },
+  heartRateGradient: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 16,
+  },
+  heartRateLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  heartRateIconCircle: {
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    backgroundColor: 'rgba(255, 64, 129, 0.12)',
+    borderWidth: 1,
+    borderColor: '#FF408155',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 14,
+  },
+  heartRateTextGroup: {
+    flex: 1,
+  },
+  heartRateTitle: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '700',
+    marginBottom: 4,
+  },
+  heartRateSubtitle: {
+    color: '#94A3B8',
+    fontSize: 12,
+    lineHeight: 16,
+  },
+  heartRateBadge: {
+    backgroundColor: '#FF4081',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 10,
+  },
+  heartRateBadgeText: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    fontWeight: '700',
   },
 });
 
