@@ -605,14 +605,14 @@ useEffect(() => {
   activeOpacity={0.85}
 >
   <LinearGradient
-    colors={['#1a0a0f', '#2d0f1a']}
+    colors={['#7B1340', '#C0185A']}
     style={styles.heartRateGradient}
     start={{ x: 0, y: 0 }}
     end={{ x: 1, y: 1 }}
   >
     <View style={styles.heartRateLeft}>
       <View style={styles.heartRateIconCircle}>
-        <Heart size={28} color="#FF4081" fill="#FF408133" strokeWidth={2} />
+        <Heart size={28} color="#FFFFFF" fill="rgba(255,255,255,0.3)" strokeWidth={2} />
       </View>
       <View style={styles.heartRateTextGroup}>
         <Text style={styles.heartRateTitle}>Heart Rate Scan</Text>
@@ -1654,14 +1654,19 @@ quoteAuthor: {
     marginBottom: 16,
     borderRadius: 16,
     overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: '#FF408133',
+    borderWidth: 1.5,
+    borderColor: '#FF4081',
+    elevation: 6,
+    shadowColor: '#FF4081',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.4,
+    shadowRadius: 6,
   },
   heartRateGradient: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 16,
+    padding: 18,
   },
   heartRateLeft: {
     flexDirection: 'row',
@@ -1672,9 +1677,9 @@ quoteAuthor: {
     width: 52,
     height: 52,
     borderRadius: 26,
-    backgroundColor: 'rgba(255, 64, 129, 0.12)',
-    borderWidth: 1,
-    borderColor: '#FF408155',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.4)',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 14,
@@ -1684,25 +1689,27 @@ quoteAuthor: {
   },
   heartRateTitle: {
     color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '700',
+    fontSize: 17,
+    fontWeight: '800',
     marginBottom: 4,
   },
   heartRateSubtitle: {
-    color: '#94A3B8',
+    color: 'rgba(255,255,255,0.8)',
     fontSize: 12,
     lineHeight: 16,
   },
   heartRateBadge: {
-    backgroundColor: '#FF4081',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
+    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+    paddingHorizontal: 14,
+    paddingVertical: 9,
     borderRadius: 10,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.4)',
   },
   heartRateBadgeText: {
     color: '#FFFFFF',
-    fontSize: 12,
-    fontWeight: '700',
+    fontSize: 13,
+    fontWeight: '800',
   },
 });
 
