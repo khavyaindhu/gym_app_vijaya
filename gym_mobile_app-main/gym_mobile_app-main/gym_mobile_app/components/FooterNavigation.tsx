@@ -139,7 +139,10 @@ export default function FooterNavigation() {
   const [showReminder, setShowReminder] = useState(false);
 
   useEffect(() => {
-    // Show first reminder after REMINDER_INTERVAL_MS, then repeat
+    // Show immediately on login
+    setShowReminder(true);
+
+    // Then repeat every 2 minutes
     const interval = setInterval(() => {
       setShowReminder(true);
     }, REMINDER_INTERVAL_MS);
