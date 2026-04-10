@@ -12,7 +12,7 @@ import {
 } from 'react-native-heroicons/solid';
 
 // Import screens
-import SimpleDashboard from './SimpleDashboard';
+import HomeSummary from '../app/dashboards/user/HomeSummary';
 import WeeklyCheckinScreen from '../app/dashboards/user/WeeklyCheckinScreen';
 import CheckInNotifications from './CheckInNotifications';
 
@@ -59,9 +59,9 @@ export default function FooterNavigation() {
     >
       {/* Dashboard - Show minimal home page */}
       {isFeatureEnabled('DASHBOARD') && (
-        <Tab.Screen 
-          name="Home" 
-          component={SimpleDashboard}
+        <Tab.Screen
+          name="Home"
+          component={HomeSummary}
           options={{
             tabBarLabel: 'Home',
             tabBarIcon: ({ focused }) => (
