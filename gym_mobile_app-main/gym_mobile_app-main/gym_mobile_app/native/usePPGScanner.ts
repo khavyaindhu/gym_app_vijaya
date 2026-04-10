@@ -24,7 +24,7 @@ export function usePPGScanner() {
   }, []);
 
   useEffect(() => {
-    ensurePPGAvailable();
+    try { ensurePPGAvailable(); } catch { return; }
     if (!ppgEmitter) return;
 
     const subs: NativeEventSubscription[] = [];

@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
   StyleSheet,
+  Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
@@ -22,6 +23,25 @@ const SCAN_TIMEOUT_SEC = 30;
 
 export default function HeartRateScan() {
   const router = useRouter();
+
+  // PPG Scanner only works on Android hardware
+  if (Platform.OS !== "android") {
+    return (
+      <SafeAreaView style={s.safe}>
+        <View style={s.notSupported}>
+          <TouchableOpacity onPress={() => router.back()}>
+            <Text style={s.back}>← Back</Text>
+          </TouchableOpacity>
+          <Text style={s.notSupportedIcon}>📱</Text>
+          <Text style={s.notSupportedTitle}>Android Only</Text>
+          <Text style={s.notSupportedText}>
+            The Heart Rate Scanner uses your phone's camera and torch.{"\n\n"}
+            Please use the Android app to access this feature.
+          </Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
   const { frame, scannerState, error, waveform, logs, start, stop, pushLog } =
     usePPGScanner();
 
@@ -302,4 +322,24 @@ const s = StyleSheet.create({
     marginBottom: 10,
   },
   tip: { color: "#9AA8C7", fontSize: 12, lineHeight: 22 },
+
+  notSupported: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 32,
+  },
+  notSupportedIcon: { fontSize: 64, marginBottom: 16, marginTop: 24 },
+  notSupportedTitle: {
+    color: "#FFFFFF",
+    fontSize: 24,
+    fontWeight: "800",
+    marginBottom: 12,
+  },
+  notSupportedText: {
+    color: "#94A3B8",
+    fontSize: 15,
+    textAlign: "center",
+    lineHeight: 24,
+  },
 });
