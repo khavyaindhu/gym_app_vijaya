@@ -237,15 +237,16 @@ export default function Register() {
     }
 
     setIsLoading(true);
-    const payload = { 
-      name, 
+    // Note: 'role' is intentionally excluded — the backend hardcodes role='user'
+    // for the /auth/register endpoint. Sending it would fail Zod .strict() validation.
+    const payload = {
+      name,
       age: age ? parseInt(age) : undefined,
       gender: gender || undefined,
       weight: weight ? parseFloat(weight) : undefined,
-      phone, 
-      email, 
-      password, 
-      role,
+      phone: phone || undefined,
+      email,
+      password,
       consent,
       privacyNoticeAccepted
     };
@@ -270,8 +271,8 @@ export default function Register() {
         
         // Store core authentication data
         await AsyncStorage.setItem("userToken", data.token);
-        await AsyncStorage.setItem("userRole", role);
-        await AsyncStorage.setItem("userId", data.userId);
+        await AsyncStorage.setItem("userRole", data.role || "user");
+        await AsyncStorage.setItem("userId", String(data.userId));
         
         // Store user profile data (age, weight, gender)
         if (data.age !== undefined) {

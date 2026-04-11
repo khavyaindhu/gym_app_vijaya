@@ -9,6 +9,7 @@ import {
   Animated,
   Easing,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   HomeIcon,
   ClipboardDocumentCheckIcon,
@@ -31,8 +32,28 @@ import { isFeatureEnabled } from '../app/config/featureFlags';
 
 const Tab = createBottomTabNavigator();
 
-// ─── Reminder interval: 2 minutes for demo ────────────────────────────────────
-const REMINDER_INTERVAL_MS = 2 * 60 * 1000; // Change to 2 * 24 * 60 * 60 * 1000 for alternate days
+// ─── Alternate-day reminder logic (every other day, starting from Sunday) ─────
+// Reference point: Sunday, January 5 2025.
+// Days 0, 2, 4, 6 … from that Sunday are "show" days.
+const REFERENCE_SUNDAY = new Date('2025-01-05T00:00:00.000Z');
+const MS_PER_DAY = 24 * 60 * 60 * 1000;
+const LAST_REMINDER_KEY = 'lastReminderDate';
+
+/** Returns "YYYY-M-D" for today (local time) — used as a unique day key. */
+function getTodayString(): string {
+  const d = new Date();
+  return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+}
+
+/** True if today falls on an alternate day counting from the reference Sunday. */
+function isAlternateDay(): boolean {
+  const now = new Date();
+  const todayUTC = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
+  const daysSinceRef = Math.round(
+    (todayUTC.getTime() - REFERENCE_SUNDAY.getTime()) / MS_PER_DAY
+  );
+  return daysSinceRef % 2 === 0; // 0 = Sun 5 Jan, 2 = Tue 7 Jan, 4 = Thu 9 Jan …
+}
 
 type TabBarIconProps = {
   focused: boolean;
@@ -108,13 +129,13 @@ function CheckInReminderModal({
             Track your progress across 9 important wellness domains and stay on top of your health journey.
           </Text>
 
-          {/* Demo note banner */}
+          {/* Schedule info banner */}
           <View style={styles.demoBanner}>
-            <Text style={styles.demoBannerIcon}>⏰</Text>
+            <Text style={styles.demoBannerIcon}>📅</Text>
             <Text style={styles.demoBannerText}>
-              <Text style={styles.demoBannerBold}>Demo Mode: </Text>
-              Reminder shown every 2 minutes.{'\n'}
-              In production, this will appear every alternate day.
+              <Text style={styles.demoBannerBold}>Reminder Schedule: </Text>
+              Every alternate day starting from Sunday.{'\n'}
+              (Sun → Tue → Thu → Sat → …)
             </Text>
           </View>
 
@@ -139,18 +160,24 @@ export default function FooterNavigation() {
   const [showReminder, setShowReminder] = useState(false);
 
   useEffect(() => {
-    // Show immediately on login
-    setShowReminder(true);
-
-    // Then repeat every 2 minutes
-    const interval = setInterval(() => {
-      setShowReminder(true);
-    }, REMINDER_INTERVAL_MS);
-
-    return () => clearInterval(interval);
+    // Show the reminder only on alternate days (Sun, Tue, Thu, Sat …)
+    // and only once per day (stored in AsyncStorage).
+    const checkReminder = async () => {
+      if (!isAlternateDay()) return;
+      const lastShown = await AsyncStorage.getItem(LAST_REMINDER_KEY);
+      if (lastShown !== getTodayString()) {
+        setShowReminder(true);
+      }
+    };
+    checkReminder();
   }, []);
 
-  const handleGoToCheckin = () => {
+  const markReminderShown = async () => {
+    await AsyncStorage.setItem(LAST_REMINDER_KEY, getTodayString());
+  };
+
+  const handleGoToCheckin = async () => {
+    await markReminderShown();
     setShowReminder(false);
     router.push('/dashboards/user/WeeklyCheckinScreen');
   };
@@ -224,7 +251,7 @@ export default function FooterNavigation() {
       {/* Global reminder modal — floats over all tabs */}
       <CheckInReminderModal
         visible={showReminder}
-        onDismiss={() => setShowReminder(false)}
+        onDismiss={async () => { await markReminderShown(); setShowReminder(false); }}
         onGoToCheckin={handleGoToCheckin}
       />
     </View>
