@@ -50,7 +50,7 @@ export default function HeartRateScan() {
 
   const [elapsed, setElapsed] = useState(0);
   const [finished, setFinished] = useState(false);
-  const [showDebug, setShowDebug] = useState(false);
+  const [showDebug, setShowDebug] = useState(true); // ON by default — matches Reshmi's original
 
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const startTimeRef = useRef<number>(0);
@@ -194,12 +194,18 @@ export default function HeartRateScan() {
 
         <PPGResultCard frame={frame} scannerState={scannerState} />
 
-        {waveform.length > 3 && (
-          <View style={s.waveCard}>
-            <Text style={s.waveTitle}>WAVEFORM (filteredY)</Text>
+        <View style={s.waveCard}>
+          <Text style={s.waveTitle}>WAVEFORM (filteredY)</Text>
+          {waveform.length > 3 ? (
             <MiniWaveform data={waveform} height={56} color="#FF4D4D" />
-          </View>
-        )}
+          ) : (
+            <View style={s.wavePlaceholder}>
+              <Text style={s.wavePlaceholderText}>
+                {isActive ? "Waiting for signal..." : "Start scan to see waveform"}
+              </Text>
+            </View>
+          )}
+        </View>
 
         <View style={s.progressWrap}>
           <View style={s.progressBg}>
@@ -299,6 +305,20 @@ const s = StyleSheet.create({
     fontWeight: "800",
     letterSpacing: 1.5,
     marginBottom: 10,
+  },
+  wavePlaceholder: {
+    height: 56,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 6,
+    backgroundColor: "#0B0F19",
+    borderWidth: 1,
+    borderColor: "#1D2740",
+  },
+  wavePlaceholderText: {
+    color: "#3A4A6A",
+    fontSize: 11,
+    fontWeight: "600",
   },
 
   progressWrap: { marginBottom: 12 },
