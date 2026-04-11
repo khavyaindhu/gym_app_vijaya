@@ -17,6 +17,7 @@ import {
   Modal,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useRouter } from 'expo-router';
 import { CHECKIN_DOMAINS, ALL_FIELDS, CheckInDomain } from './data/checkinQuestions';
 import { CheckInField } from '../config only/components/checkin/CheckInFormComponents';
 
@@ -481,7 +482,8 @@ const completionStyles = StyleSheet.create({
 //  WeeklyCheckInScreen — root export
 // ─────────────────────────────────────────────────────────────
 export default function WeeklyCheckInScreen() {
-  const [values, setValues] = useState<FormValues>(() => buildInitialState()); 
+  const router = useRouter();
+  const [values, setValues] = useState<FormValues>(() => buildInitialState());
   const [activeDomainIndex, setActiveDomainIndex] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const scrollRef = useRef<ScrollView>(null);
@@ -568,12 +570,23 @@ export default function WeeklyCheckInScreen() {
         style={screenStyles.header}
       >
         <View style={screenStyles.headerTop}>
-          <View>
+          {/* Back button */}
+          <TouchableOpacity
+            onPress={() => router.back()}
+            activeOpacity={0.7}
+            style={screenStyles.backBtn}
+          >
+            <Text style={screenStyles.backBtnText}>← Back</Text>
+          </TouchableOpacity>
+
+          {/* Title */}
+          <View style={{ flex: 1 }}>
             <Text style={screenStyles.headerTitle}>Weekly Check-In</Text>
             <Text style={screenStyles.headerSubtitle}>
               Domain {activeDomainIndex + 1} of {totalDomains}
             </Text>
           </View>
+
           {/* Week label */}
           <View style={screenStyles.weekBadge}>
             <Text style={screenStyles.weekBadgeText}>
@@ -702,8 +715,22 @@ const screenStyles = StyleSheet.create({
   headerTop: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     marginBottom: 14,
+    gap: 12,
+  },
+  backBtn: {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 10,
+    backgroundColor: 'rgba(255,255,255,0.07)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.12)',
+  },
+  backBtnText: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#A0AEC0',
   },
   headerTitle: {
     fontSize: 26,
