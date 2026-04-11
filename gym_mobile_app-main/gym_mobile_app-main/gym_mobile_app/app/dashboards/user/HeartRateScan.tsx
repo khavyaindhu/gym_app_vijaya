@@ -55,8 +55,62 @@ export default function HeartRateScan() {
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const startTimeRef = useRef<number>(0);
 
+  // ─── FIX: frameRef always holds the LATEST frame value ───────
+  // Using a ref avoids stale closure bugs — callbacks always see
+  // the most recent frame, regardless of when they were created.
+  const frameRef = useRef(frame);
+  useEffect(() => { frameRef.current = frame; }, [frame]);
+
+  // ─── FIX: handleStopRef so the timer always calls latest stop ─
+  const handleStopRef = useRef<() => Promise<void>>(async () => {});
+
   const isActive =
     scannerState === "scanning" || scannerState === "starting";
+
+  const handleStop = useCallback(async () => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+
+    await stop();
+
+    // ─── FIX: wait 500ms for any final buffered frames from native ─
+    // After stopScan(), the camera thread may still emit a few more
+    // PPGFrame events with the final BPM calculation. Without this
+    // wait, the result check below would see an outdated frame.
+    await new Promise<void>((r) => setTimeout(r, 500));
+
+    setFinished(true);
+
+    // ─── FIX: read from ref, NOT from closure ─────────────────────
+    const latestFrame = frameRef.current;
+    if (latestFrame && latestFrame.bpm > 0) {
+      const result: ScanResult = {
+        hr: latestFrame.bpm,
+        hrv: Math.floor(35 + Math.random() * 40),
+        rmssd: Math.floor(28 + Math.random() * 30),
+        sdnn: Math.floor(40 + Math.random() * 35),
+        confidence: latestFrame.sampleCount >= 200 ? 0.92 : latestFrame.sampleCount >= 100 ? 0.78 : 0.6,
+        timestamp: Date.now(),
+        samples: latestFrame.sampleCount,
+        quality:
+          latestFrame.sampleCount >= 200
+            ? "High"
+            : latestFrame.sampleCount >= 100
+            ? "Medium"
+            : "Low",
+      };
+
+      setLatest(result);
+      pushLog(`[RESULT] hr=${result.hr} samples=${result.samples} quality=${result.quality}`);
+    } else {
+      pushLog("[RESULT] no valid BPM detected");
+    }
+  }, [stop, setLatest, pushLog]); // ← frame removed from deps; using frameRef instead
+
+  // Keep handleStopRef always pointing to the latest handleStop
+  useEffect(() => { handleStopRef.current = handleStop; }, [handleStop]);
 
   const handleStart = useCallback(async () => {
     setFinished(false);
@@ -70,43 +124,11 @@ export default function HeartRateScan() {
       setElapsed(sec);
 
       if (sec >= SCAN_TIMEOUT_SEC) {
-        handleStop();
+        // ─── FIX: call via ref so timer always uses latest handleStop ─
+        handleStopRef.current();
       }
     }, 1000);
   }, [start]);
-
-  const handleStop = useCallback(async () => {
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-      timerRef.current = null;
-    }
-
-    await stop();
-    setFinished(true);
-
-    if (frame && frame.bpm > 0) {
-      const result: ScanResult = {
-        hr: frame.bpm,
-        hrv: Math.floor(35 + Math.random() * 40),
-        rmssd: Math.floor(28 + Math.random() * 30),
-        sdnn: Math.floor(40 + Math.random() * 35),
-        confidence: frame.sampleCount >= 200 ? 0.92 : frame.sampleCount >= 100 ? 0.78 : 0.6,
-        timestamp: Date.now(),
-        samples: frame.sampleCount,
-        quality:
-          frame.sampleCount >= 200
-            ? "High"
-            : frame.sampleCount >= 100
-            ? "Medium"
-            : "Low",
-      };
-
-      setLatest(result);
-      pushLog(`[RESULT] hr=${result.hr} samples=${result.samples} quality=${result.quality}`);
-    } else {
-      pushLog("[RESULT] no valid BPM detected");
-    }
-  }, [frame, stop, setLatest, pushLog]);
 
   useEffect(() => {
     return () => {
