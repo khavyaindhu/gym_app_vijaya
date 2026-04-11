@@ -13,7 +13,7 @@ import {
   ScrollView,
   Platform,
 } from 'react-native';
-import { CheckInQuestion } from '../../../user/data/checkinQuestions';
+import { CheckInQuestion } from '../../../../../services/checkInApi';
 
 // ─── Shared props every field gets ───────────────────────────
 interface BaseFieldProps {
@@ -47,7 +47,7 @@ export const ScaleField: React.FC<BaseFieldProps> = ({
           return (
             <TouchableOpacity
               key={tick}
-              onPress={() => onChange(question.field, tick)}
+              onPress={() => onChange(question.id, tick)}
               activeOpacity={0.7}
               style={[
                 fieldStyles.scaleTick,
@@ -106,7 +106,7 @@ export const NumberField: React.FC<BaseFieldProps> = ({
           value={value !== undefined && value !== null ? String(value) : ''}
           onChangeText={(txt) => {
             const parsed = parseFloat(txt);
-            onChange(question.field, isNaN(parsed) ? null : parsed);
+            onChange(question.id, isNaN(parsed) ? null : parsed);
           }}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
@@ -148,7 +148,7 @@ export const YesNoField: React.FC<BaseFieldProps> = ({
           return (
             <TouchableOpacity
               key={opt}
-              onPress={() => onChange(question.field, boolVal)}
+              onPress={() => onChange(question.id, boolVal)}
               activeOpacity={0.7}
               style={[
                 fieldStyles.yesnoBtn,
@@ -196,7 +196,7 @@ export const DropdownField: React.FC<BaseFieldProps> = ({
           return (
             <TouchableOpacity
               key={opt}
-              onPress={() => onChange(question.field, opt)}
+              onPress={() => onChange(question.id, opt)}
               activeOpacity={0.7}
               style={[
                 fieldStyles.dropdownPill,

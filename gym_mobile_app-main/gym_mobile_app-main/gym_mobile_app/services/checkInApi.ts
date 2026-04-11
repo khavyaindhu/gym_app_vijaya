@@ -13,6 +13,8 @@ interface CheckInQuestion {
   lowLabel?: string;
   highLabel?: string;
   unit?: string;
+  optional?: boolean;
+  invertedScore?: boolean;
 }
 
 interface CheckInDomain {
