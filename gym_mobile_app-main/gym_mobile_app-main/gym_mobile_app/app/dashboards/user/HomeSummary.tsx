@@ -328,8 +328,8 @@ useEffect(() => {
           </View>         
         </View>
 
-        {/* Thought for the Day */}
-        {dailyQuote && (
+        {/* Thought for the Day - Hidden */}
+        {false && dailyQuote && (
           <View style={styles.thoughtCard}>
             <View style={styles.thoughtContent}>
              
@@ -347,8 +347,8 @@ useEffect(() => {
         )}
 
 
-{/* Recommended Video Section with Navigation */}
-{recommendedVideo && allVideos.length > 0 && (
+{/* Recommended Video Section with Navigation - Hidden */}
+{false && recommendedVideo && allVideos.length > 0 && (
   <View style={styles.section}>
     <View style={styles.videoSectionHeader}>
       <Video size={20} color="#10B981" />
@@ -454,8 +454,8 @@ useEffect(() => {
 )}
 
 
-{/* Continue Learning Section */}
-<View style={styles.section}>
+{/* Continue Learning Section - Hidden */}
+{false && <View style={styles.section}>
   <View style={styles.learningSectionHeader}>
     <BookOpen size={20} color="#10B981" />
     <Text style={styles.sectionTitle}>Continue Learning</Text>
@@ -515,11 +515,11 @@ useEffect(() => {
     <BookOpen size={18} color="#FFFFFF" />
     <Text style={styles.exploreLibraryText}>Explore Health Library</Text>
   </TouchableOpacity>
-</View>
+</View>}
 
 
-{/* Today's Progress Card - New Design */}
-<View style={styles.progressCard}>
+{/* Today's Progress Card - Hidden */}
+{false && <View style={styles.progressCard}>
   <View style={styles.progressHeader}>
     <View style={styles.progressIcon}>
       <Target size={18} color="#FFFFFF" strokeWidth={2.5} />
@@ -593,10 +593,26 @@ useEffect(() => {
       </View>
     </View>
   </View>
+</View>}
+
+
+
+
+{/* Welcome to HiWox Card */}
+<View style={styles.welcomeCard}>
+  <Text style={styles.welcomeTitle}>Welcome to HiWox</Text>
+  <Text style={styles.welcomeText}>
+    Keep track of your wellness journey with our weekly check-in forms covering 9 important domains.
+  </Text>
 </View>
 
-
-
+{/* Next Step Card */}
+<View style={styles.nextStepCard}>
+  <Text style={styles.nextStepTitle}>💠💠💠 Next Step</Text>
+  <Text style={styles.nextStepText}>
+    Tap on the "Checkin" tab below to start your weekly wellness assessment.
+  </Text>
+</View>
 
 {/* Heart Rate Scanner Card */}
 <TouchableOpacity
@@ -625,8 +641,8 @@ useEffect(() => {
   </LinearGradient>
 </TouchableOpacity>
 
-{/* Quick Actions */}
-<View style={styles.quickActionsContainer}>
+{/* Quick Actions - Hidden */}
+{false && <View style={styles.quickActionsContainer}>
   <View style={styles.quickActionsHeader}>
     <View style={styles.quickActionsIcon}>
       <Target size={18} color="#FFFFFF" strokeWidth={2.5} />
@@ -686,7 +702,7 @@ useEffect(() => {
     </TouchableOpacity>
 
   </View>
-</View>
+</View>}
 
         {/* Upcoming Session */}
         {/* <View style={styles.section}>
@@ -1646,6 +1662,50 @@ quoteAuthor: {
   achievementDesc: {
     fontSize: 12,
     color: '#94A3B8',
+  },
+
+  // ── Welcome to HiWox Card ──────────────────────────────────────
+  welcomeCard: {
+    backgroundColor: '#1E293B',
+    borderRadius: 16,
+    padding: 20,
+    marginHorizontal: 16,
+    marginBottom: 14,
+    borderLeftWidth: 4,
+    borderLeftColor: '#10B981',
+  },
+  welcomeTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#10B981',
+    marginBottom: 8,
+  },
+  welcomeText: {
+    fontSize: 14,
+    color: '#D1D5DB',
+    lineHeight: 20,
+  },
+
+  // ── Next Step Card ─────────────────────────────────────────────
+  nextStepCard: {
+    backgroundColor: '#1E293B',
+    borderRadius: 16,
+    padding: 20,
+    marginHorizontal: 16,
+    marginBottom: 14,
+    borderLeftWidth: 4,
+    borderLeftColor: '#3B82F6',
+  },
+  nextStepTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#3B82F6',
+    marginBottom: 8,
+  },
+  nextStepText: {
+    fontSize: 14,
+    color: '#D1D5DB',
+    lineHeight: 20,
   },
 
   // ── Heart Rate Card ────────────────────────────────────────────
